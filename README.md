@@ -7,4 +7,4 @@
 2. Create and save a text file called 'grades.txt'
 3. Text file should contain classname, grade, units separated by commas.  Example is given in the grades.txt example file.
 4. IMPORTANT: Change the major name on line 28 to whatever you stored it as in the text file.
-Please let me know if anything breaks/I can improve the code in any way.  Thanks for reading !
+<br>Please let me know if anything breaks/I can improve the code in any way.  Thanks for reading !
