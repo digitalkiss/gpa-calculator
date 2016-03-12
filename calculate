@@ -1,0 +1,93 @@
+f = open('grades.txt', 'r')
+
+c_grade = [] #lists for all currently graded courses
+c_units = []
+c_points = []
+m_units= [] #lists for graded major courses
+m_points = []
+n_grade = [] #lists for predicted courses
+n_units = []
+n_points = []
+
+convert = {
+'A+':4.0,'A' :4.0,'A-':3.7,
+'B+':3.3,'B':3.0,'B-':2.7,
+'C+':2.3,'C':2.0,'C-':1.7,
+'D+':1.3,'D':1.0,'D-':0.7,
+'F':0.0}
+
+def current():
+    for line in f:
+        line = line.strip().split(', ')
+        grade = (line[1])
+        c_grade.append(convert[grade]) #create list of grades
+        units = (line[2])
+        c_units.append(int(units)) #create list of units
+        points = (convert[grade]*int(units))
+        c_points.append(points)
+        if line[0][0:5] == 'Psych': #calculate major gpa
+            munits = (line[2])
+            m_units.append(int(munits))
+            mpoints = (convert[grade]*int(units))
+            m_points.append(mpoints)
+    gpa = sum(c_points)/sum(c_units)
+    mgpa = sum(m_points)/sum(m_units)
+    print('Your GPA is ' + str(gpa)[0:4])
+    print('Your major GPA is ' + str(mgpa)[0:4])
+
+def predictgpa():
+    classNumber = 0
+    new_unit = 0
+    n_units.clear()
+    n_grade.clear()
+    n_points.clear()
+    while True: #count class number
+        try:
+            classNumber = int(input('Number of classes: '))
+        except ValueError:
+            print("Error: Please input a number")
+            continue
+        else:
+            break
+    for x in range(1, classNumber + 1):
+        while True: #calculate grades
+            new_grade = input('Grade received in class %s: ' % x).upper()
+            if new_grade not in convert:
+                print("Error: You must input a grade between A+ and F")
+                continue
+            else:
+                n_grade.append(convert[new_grade])
+                break
+        while True: #calculate units
+            try:
+                new_unit = int(input('Units class %s is worth: ' % x))
+                if new_unit <= 0:
+                    print("Error: Must be positive")
+                    continue
+            except ValueError:
+                print("Error: Unit must be a number")
+                continue
+            else:
+                n_units.append(int(new_unit))
+                break
+        new_points = (convert[new_grade]*int(new_unit)) #calculate points
+        n_points.append(new_points)
+    gpa = (sum(c_points) + sum(n_points))/(sum(c_units) + sum(n_units))
+    print('Your GPA will be ' + str(gpa)[0:4])
+
+def main():
+    print('---------- GPA CALCULATOR ----------')
+    current()
+    print('----------- PREDICT GPA ------------')
+    predictgpa()
+    repeatInput = input("Press [1] to predict another GPA or any other key to exit: ")
+    try:
+        if int(repeatInput) == 1:
+            main()
+    except ValueError:
+        return
+    else:
+        return
+
+if __name__ == '__main__':
+     main()
